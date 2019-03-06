@@ -1,10 +1,15 @@
 package rools;
 import com.drools.fact.order.Order
+import com.drools.fact.order.OrderEntry
 import com.drools.fact.order.DiscountValue
 import java.util.UUID
 import java.util.Arrays
 import java.math.BigDecimal
 dialect  "mvel"
+
+function String hello(String name){
+    return "hello"+name+"!";
+}
 
 rule "promotion-group-test"
 agenda-group "promotion-group"
@@ -15,4 +20,13 @@ agenda-group "promotion-group"
         modify($order){setDiscountValues(Arrays.asList(discountValue))}
 end
 
+rule "promotion-group-test1"
+agenda-group "promotion-group"
+    when
+        $order:Order()
+        accumulate(OrderEntry(order == $order,$price:price);
+                   $min:min($price))
+    then
+        System.out.println("============" + $min);
+end
 

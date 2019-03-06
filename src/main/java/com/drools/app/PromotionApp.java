@@ -24,6 +24,7 @@ public class PromotionApp extends BaseTest {
         CalculationService.calculation(order);
         log.info("order:{}",order);
         final FactHandle handle =  kieSession.insert(order);
+        kieSession.insert(order.getOrderEntries());
         log.info("handle,{}",handle.toExternalForm());
         final int count = kieSession.fireAllRules();
         CalculationService.calculation(order);
