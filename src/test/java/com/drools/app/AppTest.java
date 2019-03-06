@@ -34,4 +34,9 @@ public class AppTest {
     public void testPassiveQuery() {
         app.passiveQuery();
     }
+
+    @Test
+    public void testFromAndLock() {
+        app.fromAndLock();
+    }
 }

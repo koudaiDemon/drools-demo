@@ -6,6 +6,10 @@
         <ksession name="all-rules"/>
     </kbase>
 
+    <kbase name="promotion" packages="promotion">
+        <ksession name="promotion"/>
+    </kbase>
+
     <kbase name="stateless" packages="stateless">
         <ksession name="statelessSession" type="stateless"/>
     </kbase>

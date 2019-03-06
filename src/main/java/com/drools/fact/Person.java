@@ -4,6 +4,7 @@ import lombok.*;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author cWww
@@ -23,5 +24,6 @@ public class Person implements Serializable {
     private Integer age;
     private Date birthday;
     private Boolean married;
+    private List<Address> addresses;
 
 }

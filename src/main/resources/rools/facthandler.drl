@@ -7,8 +7,9 @@ dialect  "mvel"
 rule "fact-handler-test"
 agenda-group "fact-handler-group"
     when
-        $p:Person(age >= 20)
+        $p:Person(age >= 20,birthday > "2019-02-28 11:12:13")
     then
+        modify($p){setUsername("二狗子")}
         System.out.println($p.getUsername());
 end
 

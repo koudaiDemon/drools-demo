@@ -1,0 +1,18 @@
+package rools;
+import com.drools.fact.order.Order
+import com.drools.fact.order.DiscountValue
+import java.util.UUID
+import java.util.Arrays
+import java.math.BigDecimal
+dialect  "mvel"
+
+rule "promotion-group-test"
+agenda-group "promotion-group"
+    when
+        $order:Order(orderEntries.size() > 1 && totalPrice > 1900)
+    then
+        DiscountValue discountValue = new DiscountValue(UUID.randomUUID().toString(),BigDecimal.valueOf(100));
+        modify($order){setDiscountValues(Arrays.asList(discountValue))}
+end
+
+

@@ -1,0 +1,11 @@
+package rools;
+dialect  "mvel"
+
+rule "weekdays are high priority"
+//   calendars "weekday"
+//   timer (int:0 1h)
+when
+    eval(true)
+then
+
+end

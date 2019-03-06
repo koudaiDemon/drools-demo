@@ -1,0 +1,36 @@
+package rools;
+import com.drools.fact.Person
+import com.drools.fact.Address
+import java.util.List
+dialect  "mvel"
+
+rule "Assign people in North Carolina (NC) to sales region 1"
+agenda-group "test-from"
+lock-on-active true
+when
+    $p : Person($addresses:addresses)
+
+//    from accumulate(Person(username="AAA",$age:age),
+//                init(int total = 0;),
+//                action(total += $age;),
+//                reverse(total -= $age;),
+//                result(total))
+    exists (Address( name == "NC") from $addresses)
+then
+    System.out.println($p);
+    modify ($p) {setAge(16)} // Modify assessment in a modify block
+end
+
+
+rule "Apply a discount to people in the city of Raleigh"
+agenda-group "test-from"
+lock-on-active true
+when
+//    $p : Person()
+//    $addresses : List() from $p.addresses
+    $p : Person($addresses:addresses)
+    exists (Address( name == "Raleigh") from $addresses)
+then
+    System.out.println($p);
+    modify ($p) {setMarried(Boolean.TRUE)} // Modify assessment in a modify block
+end
