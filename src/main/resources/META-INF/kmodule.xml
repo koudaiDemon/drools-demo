@@ -14,4 +14,8 @@
         <ksession name="statelessSession" type="stateless"/>
     </kbase>
 
+    <kbase name="rule-attribute" packages="attribute">
+        <ksession name="rule-attribute"/>
+    </kbase>
+
 </kmodule>

@@ -28,7 +28,7 @@ public class BaseTest {
         final KieServices kieServices = KieServices.get();
         final KieContainer kieContainer = kieServices.getKieClasspathContainer();
         kieContainerSessionsPool = kieContainer.newKieSessionsPool(POOL_SIZE);
-        String format = "yyyy-MM-dd hh:mm:ss";
+        String format = "yyyy-MM-dd HH:mm:ss";
         System.setProperty("drools.dateformat", format);
     }
 

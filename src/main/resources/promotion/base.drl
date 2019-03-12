@@ -14,7 +14,7 @@ function String hello(String name){
 rule "promotion-group-test"
 agenda-group "promotion-group"
     when
-        $order:Order(orderEntries.size() > 1 && totalPrice > 1900)
+        $order:Order(orderEntries.size() > 1 && totalPrice > 11900)
     then
         DiscountValue discountValue = new DiscountValue(UUID.randomUUID().toString(),BigDecimal.valueOf(100));
         modify($order){setDiscountValues(Arrays.asList(discountValue))}
@@ -24,7 +24,9 @@ rule "promotion-group-test1"
 agenda-group "promotion-group"
     when
         $order:Order()
-        accumulate(OrderEntry(order == $order,$price:price);
+//        $list : Object() from accumulate(OrderEntry(order == $order,$quality:quality,$price:price);
+//                           collcetList($quality))
+        accumulate(OrderEntry(order == $order,$quality:quality,$price:price);
                    $min:min($price))
     then
         System.out.println("============" + $min);

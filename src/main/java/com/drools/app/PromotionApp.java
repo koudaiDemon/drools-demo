@@ -3,6 +3,7 @@ package com.drools.app;
 import com.drools.BaseTest;
 import com.drools.db.DBService;
 import com.drools.fact.order.Order;
+import com.drools.fact.order.OrderEntry;
 import com.drools.service.CalculationService;
 import lombok.extern.slf4j.Slf4j;
 import org.kie.api.runtime.KieSession;
@@ -24,8 +25,9 @@ public class PromotionApp extends BaseTest {
         CalculationService.calculation(order);
         log.info("order:{}",order);
         final FactHandle handle =  kieSession.insert(order);
-        kieSession.insert(order.getOrderEntries());
-        log.info("handle,{}",handle.toExternalForm());
+        for (OrderEntry entry : order.getOrderEntries()) {
+            kieSession.insert(entry);
+        }
         final int count = kieSession.fireAllRules();
         CalculationService.calculation(order);
         log.info("count,{},order:{}",count,order);

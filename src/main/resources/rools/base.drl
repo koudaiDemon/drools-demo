@@ -4,6 +4,10 @@ import com.drools.fact.Address
 import java.util.List
 dialect  "mvel"
 
+query "people over the age of 30"
+    person : Person( age > 30 )
+end
+
 rule "Assign people in North Carolina (NC) to sales region 1"
 agenda-group "test-from"
 lock-on-active true
@@ -34,3 +38,29 @@ then
     System.out.println($p);
     modify ($p) {setMarried(Boolean.TRUE)} // Modify assessment in a modify block
 end
+
+rule "a condition with more one then"
+agenda-group "test-then"
+lock-on-active true
+when
+    $p : Person($name : username)
+    if ($name == "koudai") do[koudaiHello]
+    //飘红代表当前idea不支持，并不是错误的写法
+    else if ($name == "goudan") break[goudanGun]
+then
+    System.out.println($p);
+then[koudaiHello]
+    System.out.println("hello,"+$name);
+then[goudanGun]
+    System.out.println("gun,"+$name);
+end
+
+//rule "test"
+//agenda-group "test-query"
+//when
+//    "people over the age of x"(12)
+//then
+//    System.out.println($p);
+//end
+
+
