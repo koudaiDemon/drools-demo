@@ -23,13 +23,25 @@ public class BaseTest {
     private static final Integer POOL_SIZE = 1 << 4;
 
     private KieContainerSessionsPool kieContainerSessionsPool;
+    private KieContainer kieContainer;
+    private KieServices kieServices;
 
     {
         final KieServices kieServices = KieServices.get();
         final KieContainer kieContainer = kieServices.getKieClasspathContainer();
+        this.kieContainer = kieContainer;
+        this.kieServices = kieServices;
         kieContainerSessionsPool = kieContainer.newKieSessionsPool(POOL_SIZE);
         String format = "yyyy-MM-dd HH:mm:ss";
         System.setProperty("drools.dateformat", format);
+    }
+
+    protected KieContainer getKieContainer(){
+        return kieContainer;
+    }
+
+    protected KieServices getKieServices(){
+        return this.kieServices;
     }
 
     protected KieSession getKieSession(String agendaGroup){

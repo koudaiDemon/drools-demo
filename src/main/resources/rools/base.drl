@@ -1,8 +1,16 @@
 package rools;
+import java.util.Date
 import com.drools.fact.Person
 import com.drools.fact.Address
 import java.util.List
 dialect  "mvel"
+
+declare Child
+    @role(event)
+    name:String
+    age:Integer
+    birthday:Date
+end
 
 query "people over the age of 30"
     person : Person( age > 30 )
@@ -63,4 +71,20 @@ end
 //    System.out.println($p);
 //end
 
+//rule "rule-fact-type"
+//when
+//    $c:Child(age > 10);
+//then
+//    System.out.println("rule-fact-type触发:"+$c);
+//end
 
+rule "rule-CEP"
+when
+    Number(doubleValue > 5) from accumulate(
+                Child(age > 10) over window:time(10m),
+                count(1)
+            )
+
+then
+    System.out.println("rule-CEP触发");
+end
