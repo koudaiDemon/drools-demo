@@ -1,0 +1,8 @@
+package base;
+dialect  "mvel"
+
+rule "base2"
+    when
+    then
+        System.out.println("now2:"+System.currentTimeMillis());
+end

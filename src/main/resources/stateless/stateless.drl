@@ -11,7 +11,7 @@ end
 
 //IMMEDIATE表示传播立即执行。
 //EAGER意味着传播是在计划的评估之前懒惰地进行但是急切地评估。
-//LAZY意味着传播完全是懒惰的，这是默认的PHREAK行为
+//LAZY意味着传播完全是懒惰的，这是(默认)的PHREAK行为
 query Q (Integer i)
     String( this == i.toString() )
 end

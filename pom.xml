@@ -10,6 +10,7 @@
 
     <properties>
         <commons.lang.version>2.6</commons.lang.version>
+        <commons.lang3.version>3.4</commons.lang3.version>
         <commons-collections4.version>4.1</commons-collections4.version>
         <junit.version>4.12</junit.version>
         <drools.version>7.14.0.Final</drools.version>
@@ -24,6 +25,11 @@
             <groupId>commons-lang</groupId>
             <artifactId>commons-lang</artifactId>
             <version>${commons.lang.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>${commons.lang3.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
@@ -55,11 +61,12 @@
             <artifactId>kie-api</artifactId>
             <version>${drools.version}</version>
         </dependency>
-        <dependency>
-            <groupId>org.kie</groupId>
-            <artifactId>kie-ci</artifactId>
-            <version>${drools.version}</version>
-        </dependency>
+        <!--用于依赖其他maven项目-->
+        <!--<dependency>-->
+            <!--<groupId>org.kie</groupId>-->
+            <!--<artifactId>kie-ci</artifactId>-->
+            <!--<version>${drools.version}</version>-->
+        <!--</dependency>-->
         <dependency>
             <groupId>org.drools</groupId>
             <artifactId>drools-core</artifactId>
@@ -70,6 +77,20 @@
             <artifactId>drools-compiler</artifactId>
             <version>${drools.version}</version>
         </dependency>
+
+        <!--drools Template start-->
+        <dependency>
+            <groupId>org.drools</groupId>
+            <artifactId>drools-templates</artifactId>
+            <version>${drools.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.drools</groupId>
+            <artifactId>drools-decisiontables</artifactId>
+            <version>${drools.version}</version>
+        </dependency>
+        <!--drools Template End-->
+
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>

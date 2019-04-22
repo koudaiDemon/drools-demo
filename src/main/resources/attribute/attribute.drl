@@ -4,17 +4,17 @@ import com.drools.fact.Person
 dialect  "mvel"
 
 rule "rule-attribute-timer"
-agenda-group "rule-attribute-timer"
+//agenda-group "rule-attribute-timer"
 timer (cron:0/1 * * * * ? )
     when
         $p:Person(age > 5)
     then
-    System.out.println("rule-attribute触发了"+new Date());
+    System.out.println("rule-attribute-timer触发了"+new Date());
 end
 
-rule "rule-attribute-calendars"
-calendars "weekday"
-    when
-    then
-    System.out.println("rule-attribute-calendars触发了"+new Date());
-end
+//rule "rule-attribute-calendars"
+//calendars "weekday"
+//    when
+//    then
+//    System.out.println("rule-attribute-calendars触发了"+new Date());
+//end

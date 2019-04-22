@@ -12,10 +12,15 @@
 
     <kbase name="stateless" packages="stateless">
         <ksession name="statelessSession" type="stateless"/>
+        <ksession name="statelessSessionWithoutType"/>
     </kbase>
 
     <kbase name="rule-attribute" packages="attribute">
         <ksession name="rule-attribute"/>
+    </kbase>
+
+    <kbase name="rule-cep" packages="cep" eventProcessingMode="stream">
+        <ksession name="rule-cep"/>
     </kbase>
 
 </kmodule>

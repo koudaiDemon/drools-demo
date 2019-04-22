@@ -1,0 +1,20 @@
+template header
+age
+username
+
+package template;
+
+import com.drools.fact.Person;
+
+template "template-rules"
+
+rule "Categorize Persons_@{row.rowNumber}"
+no-loop true
+when
+       $p: Person(age == @{age})
+then
+
+       modify ($p){ setUsername("@{username}")};
+
+end
+end template

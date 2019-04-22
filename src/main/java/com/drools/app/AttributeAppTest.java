@@ -21,6 +21,7 @@ public class AttributeAppTest extends BaseTest {
     @Test
     public void testAttribute() throws Exception{
         final KieSession kieSessions = this.getKieSessions("rule-attribute");
+//        kieSessions.getAgenda().getAgendaGroup("rule-attribute-timer").setFocus();
 
         Person person = new Person();
         person.setAge(0);

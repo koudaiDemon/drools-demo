@@ -1,6 +1,8 @@
 package com.drools.fact;
 
 import lombok.*;
+import org.kie.api.definition.type.Expires;
+import org.kie.api.definition.type.Role;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -17,6 +19,8 @@ import java.util.List;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
+@Role(value = Role.Type.EVENT)
+@Expires(value = "2s")
 public class Person implements Serializable {
 
     private String username;

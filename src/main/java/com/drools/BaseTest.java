@@ -64,8 +64,13 @@ public class BaseTest {
         return kieContainerSessionsPool.newKieSession(sessionName);
     }
 
-    protected StatelessKieSession getStatelessKieSession(){
-        return kieContainerSessionsPool.newStatelessKieSession("statelessSession");
+    /**
+     * notice:由于通过kieContainerSessionsPool创建以后的session默认为stateful
+     * 然后将stateful的结果包装为stateless
+     * @return
+     */
+    protected StatelessKieSession getStatelessKieSession(String sessionName){
+        return kieContainerSessionsPool.newStatelessKieSession(sessionName);
     }
 
 }

@@ -7,6 +7,7 @@ dialect  "mvel"
 
 declare Child
     @role(event)
+    @expires(10m)
     name:String
     age:Integer
     birthday:Date
@@ -14,6 +15,14 @@ end
 
 query "people over the age of 30"
     person : Person( age > 30 )
+end
+
+
+rule "base"
+agenda-group "base"
+when
+then
+    System.out.println("规则触发了");
 end
 
 rule "Assign people in North Carolina (NC) to sales region 1"
@@ -80,7 +89,7 @@ end
 
 rule "rule-CEP"
 when
-    Number(doubleValue > 5) from accumulate(
+    Integer(intValue() > 5) from accumulate(
                 Child(age > 10) over window:time(10m),
                 count(1)
             )

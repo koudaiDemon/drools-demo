@@ -15,8 +15,8 @@ import static org.quartz.TriggerBuilder.newTrigger;
 
 /**
  * @author cWww
- * @Title
- * @Description
+ * @Title TimerApp
+ * @Description 任务调度
  * @date: 2019/2/27  13:57
  */
 @Slf4j
@@ -51,7 +51,7 @@ public class TimerApp extends BaseTest {
 
             //运行一段时间后关闭
             try {
-                Thread.sleep(1000000);
+                Thread.sleep(10000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
