@@ -9,7 +9,7 @@ lock-on-active
 agenda-group "fact-handler-group"
     when
         $p:Person(age >= 20,birthday > "2019-02-28 11:12:13",$boolean : username!.empty)
-        $p1:Person(age >= 33)
+//        $p1:Person(age >= 33)
     then
         modify($p){setUsername("二狗子")}
         System.out.println($p.getUsername()+$boolean);

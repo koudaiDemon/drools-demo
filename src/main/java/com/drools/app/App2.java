@@ -1,12 +1,16 @@
 package com.drools.app;
 
 import com.drools.BaseTest;
+import com.drools.fact.Config;
 import com.drools.fact.Person;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
 import org.drools.core.common.InternalAgenda;
+import org.drools.core.common.InternalFactHandle;
 import org.drools.core.event.DebugAgendaEventListener;
 import org.drools.core.event.DebugProcessEventListener;
 import org.drools.core.event.DefaultRuleRuntimeEventListener;
+import org.drools.core.event.rule.impl.AfterActivationFiredEventImpl;
 import org.drools.template.ObjectDataCompiler;
 import org.junit.Test;
 import org.kie.api.KieBase;
@@ -14,10 +18,14 @@ import org.kie.api.KieBaseConfiguration;
 import org.kie.api.conf.EventProcessingOption;
 import org.kie.api.event.kiebase.BeforeKiePackageRemovedEvent;
 import org.kie.api.event.kiebase.DefaultKieBaseEventListener;
+import org.kie.api.event.rule.AfterMatchFiredEvent;
 import org.kie.api.event.rule.ObjectInsertedEvent;
 import org.kie.api.io.ResourceType;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
+import org.kie.api.runtime.rule.AgendaFilter;
+import org.kie.api.runtime.rule.FactHandle;
+import org.kie.api.runtime.rule.Match;
 import org.kie.internal.io.ResourceFactory;
 import org.kie.internal.utils.KieHelper;
 
@@ -25,6 +33,8 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * @author cWww
@@ -44,6 +54,8 @@ public class App2 extends BaseTest {
         helper.addResource(ResourceFactory.newClassPathResource("base/base1.drl"),ResourceType.BRL);
         final KieBase kieBase = helper.build();
         final KieSession kieSession = kieBase.newKieSession();
+        final FactHandle insert = kieSession.insert(new String("aaaaaa"));
+        log.info("factHandle:{}",insert.getClass());
         kieSession.fireAllRules();
     }
 
@@ -192,10 +204,78 @@ public class App2 extends BaseTest {
 
     @Test
     public void dynamic(){
-
         final URL resource = App2.class.getResource("");
         resource.getPath();
+    }
 
+    @Test
+    public void config(){
+        //用于测试config,指定code的rule限制执行次数
+        final String ruleCode = "testRuleCode";
+        final KieHelper helper = new KieHelper();
+        helper.addResource(ResourceFactory.newClassPathResource("base/base2.drl"),ResourceType.BRL);
+        final KieBase kieBase = helper.build();
+        final KieSession kieSession = kieBase.newKieSession();
+//        kieSession.addEventListener(new DebugAgendaEventListener(){
+//            @Override
+//            public void afterMatchFired(AfterMatchFiredEvent event) {
+//                AfterActivationFiredEventImpl firedEvent = (AfterActivationFiredEventImpl)event;
+//                final Match match = firedEvent.getMatch();
+//                final Optional<Config> configFromMatch = getConfigFromMatch(match);
+//                if (configFromMatch.isPresent()) {
+//                    final Config config = configFromMatch.get();
+//                    config.getCurrentRuns();
+//                }
+//            }
+//        });
+        final Person person = new Person();
+        person.setAge(27);
+        final Config config = new Config();
+        config.setRuleCode(ruleCode);
+        config.setMaxAllowedRuns(4);
+        final FactHandle insert = kieSession.insert(person);
+        final FactHandle con = kieSession.insert(config);
+        log.info("factHandle:{}",insert.getClass());
+        log.info("factHandle:{}",con.getClass());
+        kieSession.fireAllRules((match)->{
+            final Optional<Config> configFromMatch = getConfigFromMatch(match);
+            if (configFromMatch.isPresent()) {
+                final Integer currentRuns = configFromMatch.get().getCurrentRuns();
+                final Integer maxAllowedRuns = configFromMatch.get().getMaxAllowedRuns();
+                return currentRuns == null || maxAllowedRuns == null || currentRuns.compareTo(maxAllowedRuns) < 0;
+            }
+            return true;
+        });
+    }
+
+    @Test
+    public void testCount(){
+        //限制规则触发次数
+        final KieHelper helper = new KieHelper();
+        helper.addResource(ResourceFactory.newClassPathResource("base/base2.drl"),ResourceType.BRL);
+        final KieBase kieBase = helper.build();
+        final KieSession kieSession = kieBase.newKieSession();
+        final Person person = new Person();
+        person.setAge(23);
+        final FactHandle insert = kieSession.insert(person);
+        log.info("factHandle:{}",insert.getClass());
+        kieSession.fireAllRules(2);
+    }
+
+    private static Optional<Config> getConfigFromMatch(final Match match){
+        final Object code = match.getRule().getMetaData().get("ruleCode");
+        final List<Config> collect = match.getFactHandles().stream().
+                filter((fact) -> fact instanceof InternalFactHandle).
+                map((fact) -> ((InternalFactHandle) fact).getObject()).
+                filter((fact) -> fact instanceof Config).
+                map((fact) -> (Config) fact).
+                collect(Collectors.toList());
+        if (CollectionUtils.isNotEmpty(collect)) {
+            return collect.stream().
+                    filter(c -> c.getRuleCode().equals(code)).
+                    findFirst();
+        }
+        return Optional.empty();
     }
 
 

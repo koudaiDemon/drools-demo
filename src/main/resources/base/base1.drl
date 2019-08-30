@@ -3,6 +3,20 @@ dialect  "mvel"
 
 rule "base1"
     when
+//        String(length() > 7)
     then
-        System.out.println("now1:"+System.currentTimeMillis());
+        System.out.println("now1:"+System.currentTimeMillis()+"---"+kcontext);
+        System.out.println(""+kieRuntime);
+        System.out.println(""+knowledgeRuntime);
+end
+
+rule "base2"
+@ruleCode("base2")
+    when
+//        $s:String(length() <= 7)
+    then
+//        modify($s){
+//
+//        }
+        System.out.println("now2:"+System.currentTimeMillis());
 end
